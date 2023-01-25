@@ -74,19 +74,21 @@ int main()
 	glCullFace(GL_BACK);
 
 	// simple vertex and fragment shader 
-	Shader shader("..\\shaders\\basicVert.vs", "..\\shaders\\basicFrag.fs");
-	shader.use(); // only have one shader at the momen
+	//Shader shader("..\\shaders\\basicVert.vs", "..\\shaders\\basicFrag.fs", "..\\shaders\\basicGeo.gs");
+	Shader shader("..\\shaders\\modelVert.vs", "..\\shaders\\modelFrag.fs");
+	Shader normShader("..\\shaders\\modelVert.vs", "..\\shaders\\normFrag.fs", "..\\shaders\\normGeo.gs");
+	
 
 
 
 	//============================ TASK ONE, TWO, and THREE ===========================================
-	float points[] = {
+	/*float points[] = {
 					   -2.5f, 0.0f, 0.0f, // x y z,
-						2.5f, 0.0f, 0.0f,
-						0.0f, 2.5f, 0.0f
-	};
+						//2.5f, 0.0f, 0.0f,
+						//0.0f, 2.5f, 0.0f
+	};*/
 
-	unsigned int VBO, VAO;
+	/*unsigned int VBO, VAO;
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -95,13 +97,13 @@ int main()
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 	//=======================================================================
 
 
 	//=========================TASK FOUR, FIVE and SIX ==============================================
 	// load model with assimp
-	//Model nano("..\\resources\\nano\\nanosuit\\nanosuit.obj");
+	Model nano("..\\resources\\nano\\nanosuit\\nanosuit.obj");
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -113,7 +115,7 @@ int main()
 		processInput(window);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		shader.use();
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 		glm::mat4 view = camera.GetViewMatrix();
 		glm::mat4 model = glm::mat4(1.0f);
@@ -123,10 +125,15 @@ int main()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		// render our VAO here (tasks 1-3)
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);	
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_POINTS, 0, 1);//GL_TRIANGLES, 0, 3);	
 		// render model here( tasks 4-6)
-	
+		nano.Draw(shader);
+		normShader.use();
+		normShader.setMat4("projection", projection);
+		normShader.setMat4("view", view);
+		normShader.setMat4("model", model);
+		nano.Draw(normShader);
 
 
 
