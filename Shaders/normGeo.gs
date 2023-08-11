@@ -7,12 +7,12 @@ uniform vec2 normLength;
 
 void main()
 {
-	for(int i = 0 ; i < 2 ; i++)
-	{
-		gl_Position = gl_in[i].gl_Position;
-		EmitVertex();
-		gl_Position = (gl_in[i].gl_Position+vec4(normal_in[i]*normLength, 0.0));
-		EmitVertex();
-		EndPrimitive();
-	}
+	//for(int i = 0 ; i < 2 ; i++)
+	//{
+		//gl_Position = gl_in[i].gl_Position;
+		//EmitVertex();
+		//gl_Position = (gl_in[i].gl_Position+vec4(normal_in[i]*normLength, 0.0));
+		//EmitVertex();
+		//EndPrimitive();
+	//}
 }
